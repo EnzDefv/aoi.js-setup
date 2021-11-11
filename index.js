@@ -1,0 +1,52 @@
+const Aoijs = require('aoi.js')
+
+const bot = new Aoijs.Bot({
+    token: 'ODI4NjYwMjQ5MjIwNjEyMTM3.YGsz_w.mTUaHuglWX0p3OMBe88Q3GVHVZU',
+    prefix: "$getServerVar[prefix]",
+    intents: "all",
+    database: {
+        type: "default",
+        path: "./db/",
+        tables: ["baza"],
+        promisify: false
+    },
+    respondOnEdit: {
+        commands: true
+    },
+    suppressAllErrors: true,
+    errorMessage: ["", "{newEmbed:{title:Błąd}{description:Nieznany błąd}{color:#FB4413}}", "{actionRow:{button:Error:danger:id:yes}"]
+})
+
+bot.onMessage()
+bot.onMessageUpdate()
+bot.onInteractionCreate()
+require('./handler/status')(bot)
+require('./handler/variables')(bot)
+
+
+const loader = new Aoijs.LoadCommands(bot)
+loader.load(bot.cmd, "./commands/")
+
+loader.setColors({
+    walking: ["blink", "dim", "fgWhite"],
+    failedWalking: {
+        name: ["bright", "fgYellow", "underline"],
+
+        text: ["bright", "fgRed"]
+    },
+    typeError: {
+        command: ["bright", "fgYellow"],
+        type: ["fgYellow"],
+        text: ["bright", "fgRed"]
+    },
+    failLoad: {
+        command: ["bright", "fgMagenta"],
+        type: ["fgRed"],
+        text: ["bright", "fgRed"],
+    },
+    loaded: {
+        command: ["bright", "fgCyan"],
+        type: ["bright", "fgBlue"],
+        text: ["bright", "fgGreen"]
+    },
+})
